@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>TripPlanner</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="css/style.css">
+<link href="css/full-slider.css" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+ 
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+
+<script type="text/javascript">
+	$(function() {
+		$('#start').datetimepicker();
+		$('#end').datetimepicker({
+			useCurrent : false
+		//Important! See issue #1075
+		});
+		$("#start").on("dp.change", function(e) {
+			$('#end').data("DateTimePicker").minDate(e.date);
+		});
+		$("#end").on("dp.change", function(e) {
+			$('#start').data("DateTimePicker").maxDate(e.date);
+		});
+	});
+	
+	function formSubmit(){
+		debugger;
+		var form= document.getElementById("modalForm");
+		var elements= form.elements;
+		var tripName= elements[0].value;
+				
+		var start= elements[1].value.split(" ");
+		var startDate= start[0];
+		var end= elements[2].value.split(" ");
+		var endDate= end[0]
+		if(startDate!=null && endDate!=null){
+			var date1 = new Date(startDate);
+			var date2 = new Date(endDate);
+			var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+			var days = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+			 days = days +1;
+			
+		}
+		if(typeof(Storage) !== "undefined") {
+			sessionStorage.setItem("tripName", tripName);
+			sessionStorage.setItem("days", days);
+			sessionStorage.setItem("startDate", startDate);
+			sessionStorage.setItem("endDate", endDate);
+		} else {
+		   alert("No storage");
+		}
+		
+		return false;
+		
+	}
+</script>
+
+
+</head>
+
+<body style="height: 100%">
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">
+				<img src="images/TP icon.gif" ALIGN=left height="60px" width="60px" >TripPlanner</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" href="#something">Learn more about us</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+<header id="myCarousel" class="carousel slide">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+
+        <!-- Wrapper for Slides -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <!-- Set the first background image using inline CSS below. -->
+                <div class="fill" style="background-image:url('images/Slideshow -3.jpg');"></div>
+                <div class="carousel-content">
+					<p><b>PLAN TRIPS ON YOUR TERMS</b></p>
+				</div>
+				<div class="carousel-caption">
+					<div style="position: absolute; bottom: 0; width: 100%; height: 100px;">
+						<div id="buttons" class="row" style="height: 10%">
+							<div>
+								<a
+									style="top: 0px; position: relative; "
+									href="#about" class="btn btn-primary btn-xl page-scroll"
+									data-toggle="modal" data-target="#myModal">Plan a new Trip</a> 
+								<!--<a
+									style="top: 0px; position: relative; "
+									href="#about" class="btn btn-primary btn-xl page-scroll">View
+									Planned Trips</a>-->
+								<!--<button type="button"
+									style="top: 0px; position: relative; "
+									class="btn btn-primary btn-xl page-scroll">Learn more
+									about TimePlates</button>-->
+							</div>
+						</div>
+					</div>
+                </div>
+            </div>
+            <div class="item">
+                <!-- Set the second background image using inline CSS below. -->
+                <div class="fill" style="background-image:url('images/Slideshow -2.jpg');"></div>
+                <div class="carousel-content">
+					<p><b>DO YOUR VACATION JUST RIGHT</b></p>
+				</div>
+				<div class="carousel-caption">
+					<div style="position: absolute; bottom: 0; width: 100%; height: 100px;">
+						<div id="buttons" class="row" style="height: 10%">
+							<div>
+								<a
+									style="top: 0px; position: relative; "
+									href="#about" class="btn btn-primary btn-xl page-scroll"
+									data-toggle="modal" data-target="#myModal">Plan a new Trip</a> 
+								<!--<a
+									style="top: 0px; position: relative; "
+									href="#about" class="btn btn-primary btn-xl page-scroll">View
+									Planned Trips</a>-->
+								<!--<button type="button"
+									style="top: 0px; position: relative; "
+									class="btn btn-primary btn-xl page-scroll">Learn more
+									about TimePlates</button>-->
+							</div>
+						</div>
+					</div>
+                </div>
+            </div>
+            <div class="item">
+                <!-- Set the third background image using inline CSS below. -->
+                <div class="fill" style="background-image:url('images/Slideshow -8.jpg');"></div>
+                <div class="carousel-content">
+					<p><b>CLOUD YOUR TRAVEL PLAN</b></p>
+				</div>
+				<div class="carousel-caption">
+                    <div style="position: absolute; bottom: 0; width: 100%; height: 100px;">
+						<div id="buttons" class="row" style="height: 10%">
+							<div>
+								<a
+									style="top: 0px; position: relative; "
+									href="#about" class="btn btn-primary btn-xl page-scroll"
+									data-toggle="modal" data-target="#myModal">Plan a new Trip</a> 
+								<!--<a
+									style="top: 0px; position: relative; "
+									href="#about" class="btn btn-primary btn-xl page-scroll">View
+									Planned Trips</a>-->
+								<!--<button type="button"
+									style="top: 0px; position: relative; "
+									class="btn btn-primary btn-xl page-scroll">Learn more
+									about TimePlates</button>-->
+							</div>
+						</div>
+					</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+            <span class="icon-prev"></span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+            <span class="icon-next"></span>
+        </a>
+
+    </header>
+	
+
+	<div class="modal fade" id="myModal" role="dialog">
+		<div class="modal-dialog modal-lg">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Some details of the trip</h4>
+				</div>
+				<div class="modal-body">
+					<form role="form" action="table.html" id="modalForm" onsubmit="formSubmit()">
+						<div class="form-group">
+							<label for="name"> Trip Name</label> <input type="text"
+								class="form-control" id="name" placeholder="Name of the Trip">
+						</div>
+
+						<div class="form-group">
+							<div class="container">
+
+								<div class='col-sm-3'>
+									<label for="start"> Start Date</label>
+									<div class='input-group date' id='start'>
+										<input id="startDate" type='text' class="form-control" /> <span
+											class="input-group-addon"> <span
+											class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>
+
+
+								<div class='col-sm-3'>
+									<div class="form-group">
+									<label for="end"> End Date</label>
+										<div class='input-group date' id='end'>
+											<input id= "endDate" type='text' class="form-control" /> <span
+												class="input-group-addon"> <span
+												class="glyphicon glyphicon-calendar"></span>
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+
+
+						<div>
+							<h4>Select the Trip Type</h4>
+							<ul>
+								<li><input type="checkbox" id="myCheckbox1" value="roadTrip"/> <label
+									style="border: 1px solid #fff; padding: 10px; display: block; position: relative; margin: 10px; cursor: pointer;"
+									for="myCheckbox1"><img
+										src="images/Road Trip photo.jpg" /></label>
+								</li>
+								<li><input type="checkbox" id="myCheckbox2" value="businessTrip" disabled/> <label
+									style="border: 1px solid #fff; padding: 10px; display: block; position: relative; margin: 10px; cursor: pointer;"
+									for="myCheckbox2"><img
+										src="images/Office Trip photo.jpg" /></label>
+								</li>
+								<li><input type="checkbox" id="myCheckbox3" disabled/> <label
+									style="border: 1px solid #fff; padding: 10px; display: block; position: relative; margin: 10px; cursor: pointer;"
+									for="myCheckbox3"><img
+										src="images/Honey Moon photo.jpg" /></label>
+								</li>
+								<li><input type="checkbox" id="myCheckbox4" disabled/> <label
+									style="border: 1px solid #fff; padding: 10px; display: block; position: relative; margin: 10px; cursor: pointer;"
+									for="myCheckbox4"><img
+										src="images/Family Vacation photo.jpg" /></label>
+								</li>
+								<li><input type="checkbox" id="myCheckbox5" disabled /> <label
+									style="border: 1px solid #fff; padding: 10px; display: block; position: relative; margin: 10px; cursor: pointer;"
+									for="myCheckbox4"><img
+										src="images/Cruise photo.jpg" /></label>
+								</li>
+								<li><input type="checkbox" id="myCheckbox5" disabled/> <label
+									style="border: 1px solid #fff; padding: 10px; display: block; position: relative; margin: 10px; cursor: pointer;"
+									for="myCheckbox4"><img
+										src="images/BleisureTravel photo.jpg" /></label>
+								</li>
+							</ul>
+						</div>
+						
+						<button type="submit" class="btn btn-success btn-block">Next</button>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</body>
+</html>

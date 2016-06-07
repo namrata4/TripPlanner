@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>TripPlanner</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://apis.google.com/js/client.js"></script>
+<script src="lib/dropbox.js" type="text/javascript"></script>
+<script src="lib/item-mirror-new.js" type="text/javascript"></script>
+<script src="lib/dropbox-itemMirror.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="scripts/main.js"></script>
+
+<script type="text/javascript">
+     
+     var tripName= sessionStorage.getItem("tripName");
+     var days= sessionStorage.getItem("days");
+     var startDate= sessionStorage.getItem("startDate");
+     var endDate= sessionStorage.getItem("endDate");
+     var daysId=new Object();
+	 console.log(days);
+     
+     
+     function driveSelector(){
+    	 document.getElementById("storeSelect").style.display="none";
+    	 document.getElementById("wait").style.display="block";
+    	 authorizeDrive();
+     }
+     
+     function dropboxSelector(){
+    	 document.getElementById("storeSelect").style.display="none";
+    	 document.getElementById("wait").style.display="block";
+    	 connectDropbox();
+     }
+	 
+     window.onload = function() {
+     document.getElementById("title").innerHTML="Trip: "+ tripName +"&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Start Date: "+startDate+" &nbsp; &nbsp; End Date: "+endDate  ; 
+  }
+  
+     </script>
+
+<style type="text/css">
+ .modal-header, h4, .close {
+      background-color: #5cb85c;
+      color:white !important;
+      text-align: center;
+      font-size: 30px;
+  }
+  .modal-footer {
+      background-color: #f9f9f9;
+      text-align:center
+  }
+
+.rowheader {
+	background-color: #fcf8e3;
+}
+
+.rowheader:hover {
+	background-color: #faf2cc;
+}
+
+.header {
+	background-color: #5cb85c;
+    font-size: 17px;
+    color: #ffffff;
+}
+
+.header:hover {
+	background-color: #d0e9c6;
+}
+
+td:hover {
+    cursor: pointer;
+    border: 2px solid green
+}
+
+
+
+tbody {
+background-color: white;
+font-family: cursive;
+}
+
+
+</style>
+
+
+</head>
+
+<body>
+
+
+	<div class="header-content" style="height: 20%">
+     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+         <div class="container-fluid">
+             <!-- Brand and toggle get grouped for better mobile display -->
+             <div class="navbar-header">
+                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top"><img src="images/TP icon.gif" ALIGN=left height="60px" width="60px" >TripPlanner</a>
+            </div>
+  
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" href="#something">Learn more about us</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+	</div>
+
+<div class="container" id="storeSelect" style="position:relative; top:100px">
+<div   class="panel panel-default" style="text-align: center;">
+<div class="panel-heading">Please select the store to connect</div>
+  <div class="panel-body">
+  <button onclick="driveSelector();"   class="btn btn-success" style="width:120px">Google Drive</button>
+<button onclick="dropboxSelector();"  class="btn btn-success" style="width:120px">Dropbox</button>
+				
+  </div>
+</div>
+</div>
+
+<div class="container" id="wait" style="position:relative; top:100px; display:none">
+<div   class="panel panel-default" style="text-align: center;">
+<div class="panel-heading">Loading.....</div>
+  <div class="panel-body">
+  <div class="progress">
+  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+    <span class="sr-only">40% Complete (success)</span>
+  </div>
+</div>			
+  </div>
+</div>
+</div>
+
+
+	<div class="container" id="mainDiv" style="display: none; position:relative; top:100px">
+		<h3 id="title"></h3>
+		
+		
+		<div class="well">
+
+			<table class="table table-bordered table-hover" id="mtable">
+				<thead>
+					<tr class="header">
+						<th><b>Things to plan</b></th>
+						
+					</tr>
+				</thead>
+				<tbody>
+					<tr id="Departure">
+						<th scope="row" class="rowheader"><img src="images/Departure.gif" style="height:50px"/>Leave from</th>
+						
+					</tr>
+					<tr id="Morning Activities">
+						<th scope="row" class="rowheader"><img src="images/Morning.gif" style="height:50px"/> Morning Activities</th>
+						
+					</tr>
+					<tr id="Lunch">
+						<th scope="row" class="rowheader"><img src="images/Lunch.gif" style="height:50px" /> Lunch </th>
+						
+					</tr>
+					<tr id="Afternoon Activities">
+						<th scope="row" class="rowheader"><img src="images/Afternoon.gif" style="height:50px"/> Afternoon Activities</th>
+						
+					</tr>
+					<tr id="Dinner">
+						<th scope="row" class="rowheader"> <img src="images/Dinner.gif" style="height:50px"/> Dinner</th>
+						
+					</tr>
+				    <tr id="Night Activities">
+						<th scope="row" class="rowheader"><img src="images/Night.gif" style="height:50px"/> Night Activities</th>
+						
+					</tr>
+					<tr id="Lodging">
+						<th scope="row" class="rowheader"><img src="images/Lodges.gif" style="height:50px" /> Lodging</th>
+						
+					</tr>
+					<tr id="Arrival">
+						<th scope="row" class="rowheader"><img src="images/Arrival.gif" style="height:50px"/>Destination</th>
+						
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="text-align: center">
+		<!-- <button id="save" class="btn btn-success btn-lg " onclick="saveNotes()"> Done! View in cloud</button> -->
+         <button  id="open" class="btn btn-primary btn-lg " onclick="openTrip()"> Done! View in cloud</button>
+ 		<a  class="btn btn-danger btn-lg " href="index.html"><span class="glyphicon glyphicon-remove"></span> Go Back</a>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="cellClick" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+       <div class="modal-content">
+        <div class="modal-header" style="padding:35px 50px;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 id="modalTitle"></h4>
+        </div>
+        <div class="modal-body" style="padding:40px 50px;">
+         <label for="titleCell"> Title </label>
+         
+            <input type="text" id="titleCell">
+              <h4> Notes</h4>
+              <textarea  id="notes" cols="70" rows="10" placeholder="Enter comments"></textarea>
+        
+          
+              <h4> Links</h4>
+              <textarea  id="links" cols="70" rows="10" placeholder="Enter Links"></textarea>
+          
+              
+       
+        </div>
+        <div class="modal-footer" >
+          <button id="save" class="btn btn-success btn-default " data-dismiss="modal" onclick="saveNotes()"> Save Notes</button>
+           <button  id="open" class="btn btn-primary btn-default " data-dismiss="modal" onclick="openinDrive()"> Open in Drive</button>
+ <button  class="btn btn-danger btn-default " data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+        </div>
+      </div>
+      
+    </div>
+  </div> 
+  
+  
+  	<div class="modal fade" id="dropboxCell" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+       <div class="modal-content">
+        <div class="modal-header" style="padding:35px 50px;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 id="modalTitle1"></h4>
+        </div>
+        <div class="modal-body" style="padding:40px 50px;">
+         <label for="titleCell1"> Notes </label>
+         
+            <input type="text" id="titleCell1">
+             
+        </div>
+        <div class="modal-footer" >
+          <button id="save" class="btn btn-success btn-default " data-dismiss="modal" onclick="saveDropNotes()"> Save Notes</button>
+           <button  id="open" class="btn btn-primary btn-default " data-dismiss="modal" onclick="openinDrop()"> Open in Dropbox</button>
+ <button  class="btn btn-danger btn-default " data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+        </div>
+      </div>
+      
+    </div>
+  </div> 
+
+</body>
+</html>
