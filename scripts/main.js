@@ -369,6 +369,7 @@ function navigateMirror(guid) {
 	}
 	else if(store=="Dropbox")
 		{
+		
 		currentCell= cell.getAttribute("id");
 		$('#dropboxCell').modal('show');
 		
@@ -417,8 +418,8 @@ function navigateMirror(guid) {
 		window.open("https://drive.google.com/folderview?id="+daysId[tripName]);
 		}
 		else if(store=="Dropbox"){
-			
-			var url= tripim.getPublicURL(daysId[tripName]);
+			im= tripim.getCreator();
+			var url= im.getPublicURL(daysId[tripName]);
 				window.open(url);
 		}
 	}
@@ -427,7 +428,7 @@ function navigateMirror(guid) {
 		var options= [
 		              {
 		 "displayText":tripName,
-		"localItem":"TimePlates",
+		"localItem":tripName,
 		"isGroupingItem":"true"}];
 		
 		im.createAssociation(options[0], function(error,GUID){
